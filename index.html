@@ -1486,15 +1486,16 @@ function submitForm() {
     btn.disabled = true;
     btn.textContent = 'Submitting...';
 
-    // Store locally (replace with real backend when ready)
-    const submissions = JSON.parse(localStorage.getItem('persephone_requests') || '[]');
-    submissions.push({ name, org, email, module, usecase, timestamp: new Date().toISOString() });
-    localStorage.setItem('persephone_requests', JSON.stringify(submissions));
-
-    setTimeout(() => {
-        document.getElementById('access-form').style.display = 'none';
-        document.getElementById('form-success').style.display = 'block';
-    }, 800);
+    // Store locally (replace with real backend when ready)-replaced
+    fetch('https://persephone-saas.onrender.com/api/auth/request-access', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ name, organisation: org, email, module, use_case: usecase })
+})
+.finally(() => {
+    document.getElementById('access-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+});
 }
 </script>
 <script>
